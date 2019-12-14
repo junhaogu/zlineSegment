@@ -57,7 +57,7 @@ def read_single_cell_image(image_data_path, mask_data_path):
   
   plt.imshow(mask[0][0,:,:])
   plt.imshow(sample_data[0][0,:,:])
-    indexlist=[]
+  indexlist=[]
   for i in range (sample_data.shape[0]):
       indexlist.append(i)
   shuffle(indexlist)
