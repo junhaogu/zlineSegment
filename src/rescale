@@ -1,0 +1,36 @@
+// ask user to select a folder
+dir = getDirectory("Select input folder");
+// get the list of files (& folders) in it
+fileList = getFileList(dir);
+// prepare a folder to output the images
+out_dir1=getDirectory("select a folder for output");
+
+
+
+//activate batch mode
+setBatchMode(true);
+
+// LOOP to process the list of files
+for (i = 0; i < lengthOf(fileList); i++) {
+	// define the "path" 
+	// by concatenation of dir and the i element of the array fileList
+	current_imagePath = dir+fileList[i];
+	// check that the currentFile is not a directory
+	if (!File.isDirectory(current_imagePath)){
+		// open the image and split
+		open(current_imagePath);
+                currentImage_name = getTitle(); 
+		// get some info about the image
+		makeRectangle(114, 40, 1280, 640);
+                run("Crop");
+                run("Scale...", "x=- y=- width=512 height=256 interpolation=Bilinear average create");
+		// now we save all the generated images as tif in the output_dir                  
+                currentImage_name=replace(currentImage_name,"_clean_w3mCherry","");
+                currentImage_name=replace(currentImage_name,".tif","");
+                saveAs("tiff", out_dir1+currentImage_name);
+          
+		// make sure to close every images befores opening the next one
+		run("Close All");
+	}
+}
+setBatchMode(false);

@@ -1,0 +1,47 @@
+// ask user to select a folder
+dir = getDirectory("Select cardiomyocyte image folder");
+// get the list of files (& folders) in it
+fileList = getFileList(dir);
+
+dir1=getDirectory("Select image folder of fibroblast");
+fileList1= getFileList(dir1);
+
+out_dir=getDirectory("select a folder for output");
+
+
+
+//activate batch mode
+setBatchMode(true);
+
+// LOOP to process the list of files
+for (i = 0; i <lengthOf(fileList); i++) {
+	// define the "path" 
+	// by concatenation of dir and the i element of the array fileList
+	cardiomyocyte_ImagePath = dir+fileList[i];
+	// check that the currentFile is not a directory
+	if (!File.isDirectory(cardiomyocyte_ImagePath)){
+		for (j=0;j <lengthOf(fileList1); j++)
+                {
+                   fibroblast_ImagePath=dir1+fileList1[j];
+                   if (!File.isDirectory(fibroblast_ImagePath)){
+                       open(fibroblast_ImagePath);
+                       fibroblastImage_name=getTitle();
+                                              
+                       
+                       open(cardiomyocyte_ImagePath); 
+                       cardiomyocyteImage_name = getTitle();
+                       op=40+random()*10;
+                       run("Add Image...", "image=fibroblastImage_name x=0 y=0 opacity=op ");
+                       run("Flatten");
+                       currentImage_name=replace(cardiomyocyteImage_name,".tif", j);             
+                       saveAs("tiff", out_dir+currentImage_name);
+                       run("Close All");
+                   }
+                }
+			  
+	}
+		// make sure to close every images befores opening the next one
+		
+	
+}
+setBatchMode(false);
