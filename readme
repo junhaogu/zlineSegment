@@ -1,0 +1,15 @@
+This is the code and file for training zlineSegementation
+
+readimagefiles reads images in overlay folder and mask folder
+overlay images were generated with 1 cardiomyocyte image overlaying with 17 different fibroblast images, therefore, every 17 overlay images
+correspond to 1 mask image
+
+cross_valid uses k-fold validation method for training, it takes sample and mask data, fold, and model. It allows continuing training of 
+previously paused training as long as indicate the fold number.
+
+k_cross_val_split first shuffle data, and put data into k bins.
+
+model_train contains training for model, whether continue previously pause training or start fresh. it stores the best model with lowest 
+validation error, and record all losses for later plotting if necessary
+
+loss contains dice loss, which can be adjusted with weight depending on whether heavy penalize on false positive/negative is necessary
